@@ -30,6 +30,10 @@
     .dot{font-size:.8rem;cursor:default;line-height:1.3;user-select:none}
     .dot-ok{color:#3fb950}
     .dot-no{color:#30363d}
+    .section-divider{border:0;border-top:1px solid #30363d;margin:1.75rem 0 1.5rem}
+    .kpi-label{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8b949e;margin-bottom:.5rem}
+    .kpi-value{line-height:1.15}
+    .kpi-sub{font-size:.78rem;color:#8b949e;margin-top:.4rem}
     footer{border-top:1px solid #30363d;padding-top:1rem}
   </style>
 </head>
@@ -45,7 +49,9 @@
 <div class="container-lg">
 
   <!-- 요약 카드 -->
-  <div class="row g-3 mb-4" id="summaryCards"></div>
+  <div class="row g-3 mb-2" id="summaryCards"></div>
+
+  <hr class="section-divider">
 
   <!-- 이번 주 TOP 10 -->
   <div class="card shadow-sm mb-4">
@@ -83,6 +89,8 @@
     </div>
   </div>
 
+  <hr class="section-divider">
+
   <!-- 주차별 이력 -->
   <div class="card shadow-sm mb-4">
     <div class="card-header bg-white"><h5 class="mb-0">주차별 추천 이력</h5></div>
@@ -90,6 +98,8 @@
       <div class="accordion accordion-flush" id="historyAcc"></div>
     </div>
   </div>
+
+  <hr class="section-divider">
 
   <footer class="text-center text-muted small mb-4">
     ⚠️ 본 대시보드는 투자 참고용 시뮬레이션입니다. 실제 투자 권유가 아닙니다.<br>
@@ -120,17 +130,38 @@ function retHtml(v) {
 (function() {
   const o = DATA.overall;
   if (!o) return;
-  const s = o.overall_return_pct;
-  const col = s >= 0 ? 'danger' : 'primary';
-  const items = [
-    ['누적 수익률',   `<span class="display-6 fw-bold text-${col}">${sign(s)}${s.toFixed(1)}%</span>`],
-    ['총 투자금',     `<span class="h5">${fmt(o.total_invested_man)}만원</span><div class="text-muted small">${o.weeks}주차</div>`],
-    ['현재 평가금',   `<span class="h5">${fmt(o.total_current_man)}만원</span>`],
-  ];
-  document.getElementById('summaryCards').innerHTML = items.map(([t, v]) =>
-    `<div class="col-sm-4"><div class="card shadow-sm text-center py-3 px-2">
-      <div class="text-muted small mb-1">${t}</div>${v}</div></div>`
-  ).join('');
+  const s   = o.overall_return_pct;
+  const clr = s >= 0 ? '#3fb950' : '#f85149';
+  const arr = s >= 0 ? '▲' : '▼';
+  const pnl = o.total_current_man - o.total_invested_man;
+  document.getElementById('summaryCards').innerHTML = `
+    <div class="col-12 col-md-6">
+      <div class="card shadow-sm h-100 text-center py-4 px-3">
+        <div class="kpi-label">누적 수익률</div>
+        <div class="kpi-value" style="font-size:2rem;font-weight:700;color:${clr}">
+          ${arr} ${sign(s)}${s.toFixed(2)}%
+        </div>
+        <div class="kpi-sub">${o.weeks}주 운용</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card shadow-sm h-100 text-center py-4 px-3">
+        <div class="kpi-label">총 투자금</div>
+        <div class="kpi-value" style="font-size:1.4rem;font-weight:600">
+          ${fmt(o.total_invested_man)}<span style="font-size:.85rem;color:#8b949e"> 만원</span>
+        </div>
+        <div class="kpi-sub">${o.weeks}주 × 최대 1,000만원</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card shadow-sm h-100 text-center py-4 px-3">
+        <div class="kpi-label">현재 평가금</div>
+        <div class="kpi-value" style="font-size:1.4rem;font-weight:600">
+          ${fmt(o.total_current_man)}<span style="font-size:.85rem;color:#8b949e"> 만원</span>
+        </div>
+        <div class="kpi-sub" style="color:${clr}">${sign(pnl)}${fmt(pnl)} 만원</div>
+      </div>
+    </div>`;
 })();
 
 /* 이번 주 TOP 10 테이블 헤더 */
