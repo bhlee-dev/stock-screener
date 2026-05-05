@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KRX 주간 종목 스크리너</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    .score-bar{display:flex;height:5px;border-radius:3px;overflow:hidden;margin-top:3px}
+    .score-fill{background:#198754}
+    .score-empty{background:#dee2e6}
+    .cond-ok{color:#198754;font-size:.85rem}
+    .cond-no{color:#adb5bd;font-size:.85rem}
+    footer{border-top:1px solid #dee2e6;padding-top:1rem}
+  </style>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark mb-4">
+  <div class="container-fluid px-4">
+    <span class="navbar-brand fw-bold">📊 KRX 주간 종목 스크리너</span>
+    <span class="text-light small">최종 업데이트: 2026-05-05</span>
+  </div>
+</nav>
+
+<div class="container-lg">
+
+  <!-- 요약 카드 -->
+  <div class="row g-3 mb-4" id="summaryCards"></div>
+
+  <!-- 이번 주 TOP 10 -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-white d-flex align-items-center">
+      <h5 class="mb-0">이번 주 추천 종목</h5>
+      <span class="ms-2 badge bg-secondary">2026-05-05</span>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 small">
+          <thead class="table-light" id="topHead"></thead>
+          <tbody id="topBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 수익률 차트 + 성과 요약 -->
+  <div class="row g-3 mb-4">
+    <div class="col-lg-8">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">가상 포트폴리오 누적 수익률</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="returnChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-white"><h5 class="mb-0">성과 요약</h5></div>
+        <div class="card-body" id="perfSummary"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 주차별 이력 -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-white"><h5 class="mb-0">주차별 추천 이력</h5></div>
+    <div class="card-body p-0">
+      <div class="accordion accordion-flush" id="historyAcc"></div>
+    </div>
+  </div>
+
+  <footer class="text-center text-muted small mb-4">
+    ⚠️ 본 대시보드는 투자 참고용 시뮬레이션입니다. 실제 투자 권유가 아닙니다.<br>
+    주가 데이터는 KRX 제공이며 실시간이 아닙니다.
+  </footer>
+</div>
+
+<script>
+/*
+ * 보안 고지: 아래 DATA 객체는 주식 시장 공개 데이터(종목코드·가격·점수)만 포함합니다.
+ * API 키, 사용자 자격증명, 개인식별정보는 일절 포함되지 않습니다.
+ */
+const DATA = {"updated_at": "2026-05-05", "latest_week": "2026-05-05", "max_score": 18, "cond_keys": ["ma_uptrend", "ma_full_alignment", "base_formation", "bollinger_contraction", "volume_breakout", "rsi_not_overbought", "eps_growth", "revenue_growth", "operating_profit_growth", "institution_net_buy", "foreign_net_buy"], "cond_labels": ["MA200", "MA배열", "베이스", "볼린저", "거래량", "RSI", "EPS", "매출", "영업익", "기관", "외국인"], "cond_titles": ["200일선 우상향", "강세 배열", "베이스 형성", "볼린저 수축", "거래량 돌파", "RSI 과매수 아님", "EPS 성장", "매출 성장", "영업이익 성장", "기관 순매수", "외국인 순매수"], "history": [{"week": "2026-04-24", "stocks": [{"ticker": "330590", "name": "롯데리츠", "buy_price": 4805, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "006910", "name": "보성파워텍", "buy_price": 11870, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "097230", "name": "HJ중공업", "buy_price": 32650, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "010820", "name": "퍼스텍", "buy_price": 15310, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "007690", "name": "국도화학", "buy_price": 40750, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "053610", "name": "프로텍", "buy_price": 73900, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "094820", "name": "일진파워", "buy_price": 19430, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "355150", "name": "코스텍시스", "buy_price": 33150, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "217330", "name": "싸이토젠", "buy_price": 5240, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "265560", "name": "영화테크", "buy_price": 10040, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}], "week_return_pct": -100.0, "cumulative_return_pct": -100.0}, {"week": "2026-05-05", "stocks": [{"ticker": "005690", "name": "파미셀", "buy_price": 20250, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "042660", "name": "한화오션", "buy_price": 133000, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "229640", "name": "LS에코에너지", "buy_price": 90400, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "254490", "name": "미래반도체", "buy_price": 29250, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "237690", "name": "에스티팜", "buy_price": 153800, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "001200", "name": "유진투자증권", "buy_price": 5980, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "006650", "name": "대한유화", "buy_price": 179900, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "028100", "name": "동아지질", "buy_price": 18520, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "230360", "name": "에코마케팅", "buy_price": 16000, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}, {"ticker": "062040", "name": "산일전기", "buy_price": 333500, "current_price": 0, "return_pct": -100.0, "score": 0, "conditions": {}}], "week_return_pct": -100.0, "cumulative_return_pct": -100.0}], "overall": {"total_invested_man": 1926, "total_current_man": 0, "overall_return_pct": -100.0, "weeks": 2}, "chart": {"labels": ["2026-04-24", "2026-05-05"], "cumulative": [-100.0, -100.0]}};
+
+const MAX  = DATA.max_score;
+const KEYS = DATA.cond_keys;
+const LBLS = DATA.cond_labels;
+const TTLS = DATA.cond_titles;
+
+function fmt(n)  { return Number(n).toLocaleString('ko-KR'); }
+function sign(v) { return v >= 0 ? '+' : ''; }
+function retHtml(v) {
+  const cls = v > 0 ? 'text-danger' : v < 0 ? 'text-primary' : 'text-secondary';
+  return `<span class="${cls} fw-semibold">${sign(v)}${v.toFixed(1)}%</span>`;
+}
+
+/* 요약 카드 */
+(function() {
+  const o = DATA.overall;
+  if (!o) return;
+  const s = o.overall_return_pct;
+  const col = s >= 0 ? 'danger' : 'primary';
+  const items = [
+    ['누적 수익률',   `<span class="display-6 fw-bold text-${col}">${sign(s)}${s.toFixed(1)}%</span>`],
+    ['총 투자금',     `<span class="h5">${fmt(o.total_invested_man)}만원</span><div class="text-muted small">${o.weeks}주차</div>`],
+    ['현재 평가금',   `<span class="h5">${fmt(o.total_current_man)}만원</span>`],
+  ];
+  document.getElementById('summaryCards').innerHTML = items.map(([t, v]) =>
+    `<div class="col-sm-4"><div class="card shadow-sm text-center py-3 px-2">
+      <div class="text-muted small mb-1">${t}</div>${v}</div></div>`
+  ).join('');
+})();
+
+/* 이번 주 TOP 10 테이블 헤더 */
+(function() {
+  const condThs = LBLS.map((l, i) =>
+    `<th class="text-center" title="${TTLS[i]}">${l}</th>`
+  ).join('');
+  document.getElementById('topHead').innerHTML =
+    `<tr><th>#</th><th>종목명</th><th>코드</th><th>점수</th>
+     <th>매수가</th><th>현재가</th><th>수익률</th>${condThs}</tr>`;
+})();
+
+/* 이번 주 TOP 10 테이블 바디 */
+(function() {
+  const h = DATA.history;
+  if (!h.length) return;
+  const latest = h[h.length - 1];
+  const rows = latest.stocks.map((s, i) => {
+    const pct = Math.round(s.score / MAX * 100);
+    const scoreCell =
+      `<td><span class="fw-semibold">${s.score}</span><span class="text-muted">/${MAX}</span>
+       <div class="score-bar"><div class="score-fill" style="width:${pct}%"></div>
+       <div class="score-empty" style="width:${100-pct}%"></div></div></td>`;
+    const condCells = KEYS.map(k => {
+      const ok = s.conditions && s.conditions[k];
+      return `<td class="text-center">${ok
+        ? '<span class="cond-ok" title="충족">✔</span>'
+        : '<span class="cond-no" title="미충족">✘</span>'}
+      </td>`;
+    }).join('');
+    return `<tr>
+      <td class="text-muted">${i+1}</td>
+      <td><strong>${s.name}</strong></td>
+      <td><span class="badge bg-secondary">${s.ticker}</span></td>
+      ${scoreCell}
+      <td>${fmt(s.buy_price)}원</td>
+      <td>${fmt(s.current_price)}원</td>
+      <td>${retHtml(s.return_pct)}</td>
+      ${condCells}
+    </tr>`;
+  }).join('');
+  document.getElementById('topBody').innerHTML = rows || '<tr><td colspan="20" class="text-center text-muted py-3">데이터 없음</td></tr>';
+})();
+
+/* 수익률 차트 */
+(function() {
+  const c = DATA.chart;
+  if (!c || !c.labels.length) return;
+  new Chart(document.getElementById('returnChart'), {
+    type: 'line',
+    data: {
+      labels: c.labels,
+      datasets: [{
+        label: '누적 수익률 (%)',
+        data: c.cumulative,
+        borderColor: '#dc3545',
+        backgroundColor: 'rgba(220,53,69,0.07)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => sign(ctx.raw) + ctx.raw.toFixed(2) + '%' } }
+      },
+      scales: {
+        y: {
+          ticks: { callback: v => sign(v) + v + '%' },
+          grid: { color: 'rgba(0,0,0,0.04)' }
+        }
+      }
+    }
+  });
+})();
+
+/* 성과 요약 (베스트/워스트) */
+(function() {
+  const all = DATA.history.flatMap(e => e.stocks);
+  if (!all.length) return;
+  const sorted = [...all].sort((a, b) => b.return_pct - a.return_pct);
+  const top3  = sorted.slice(0, 3);
+  const bot3  = sorted.slice(-3).reverse();
+  let html = '';
+  if (top3.length) {
+    html += '<p class="mb-1 fw-semibold small">🏆 베스트 종목</p><ul class="list-unstyled small mb-3">';
+    top3.forEach(s => { html += `<li>${s.name} ${retHtml(s.return_pct)}</li>`; });
+    html += '</ul>';
+  }
+  if (bot3.length) {
+    html += '<p class="mb-1 fw-semibold small">💀 워스트 종목</p><ul class="list-unstyled small">';
+    bot3.forEach(s => { html += `<li>${s.name} ${retHtml(s.return_pct)}</li>`; });
+    html += '</ul>';
+  }
+  document.getElementById('perfSummary').innerHTML = html;
+})();
+
+/* 주차별 이력 아코디언 */
+(function() {
+  const history = [...DATA.history].reverse();
+  const condThs = LBLS.map((l, i) =>
+    `<th class="text-center" title="${TTLS[i]}">${l}</th>`
+  ).join('');
+  const acc = document.getElementById('historyAcc');
+  acc.innerHTML = history.map((entry, i) => {
+    const id = `acc${i}`;
+    const rows = entry.stocks.map((s, j) => {
+      const condCells = KEYS.map(k => {
+        const ok = s.conditions && s.conditions[k];
+        return `<td class="text-center">${ok ? '<span class="cond-ok">✔</span>' : '<span class="cond-no">✘</span>'}</td>`;
+      }).join('');
+      return `<tr>
+        <td>${j+1}</td>
+        <td>${s.name} <span class="badge bg-secondary">${s.ticker}</span></td>
+        <td><span class="fw-semibold">${s.score}</span>/${MAX}</td>
+        <td>${fmt(s.buy_price)}원</td>
+        <td>${fmt(s.current_price)}원</td>
+        <td>${retHtml(s.return_pct)}</td>
+        ${condCells}
+      </tr>`;
+    }).join('');
+    return `
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button ${i > 0 ? 'collapsed' : ''} small py-2"
+                  type="button" data-bs-toggle="collapse" data-bs-target="#${id}">
+            <span class="fw-semibold me-2">${entry.week}</span>
+            <span class="text-muted me-2">${entry.stocks.length}종목</span>
+            ${retHtml(entry.week_return_pct)}
+          </button>
+        </h2>
+        <div id="${id}" class="accordion-collapse collapse ${i === 0 ? 'show' : ''}">
+          <div class="accordion-body p-0">
+            <div class="table-responsive">
+              <table class="table table-sm table-hover align-middle mb-0 small">
+                <thead class="table-light"><tr>
+                  <th>#</th><th>종목</th><th>점수</th>
+                  <th>매수가</th><th>현재가</th><th>수익률</th>
+                  ${condThs}
+                </tr></thead>
+                <tbody>${rows}</tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

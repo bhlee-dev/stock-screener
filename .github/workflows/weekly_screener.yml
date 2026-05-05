@@ -1,0 +1,46 @@
+name: 주간 종목 스크리너
+
+on:
+  schedule:
+    # 매주 월요일 오전 8시 KST (= UTC 23:00 일요일)
+    - cron: "0 23 * * 0"
+  workflow_dispatch:  # 수동 실행 버튼 (테스트용)
+
+jobs:
+  run-screener:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write   # docs/ 및 recommendation_history.json 커밋·푸시 용도만 사용
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 3.11 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: 패키지 설치
+        run: pip install -r requirements.txt
+
+      - name: 스크리너 실행
+        env:
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          KRX_ID: ${{ secrets.KRX_ID }}
+          KRX_PW: ${{ secrets.KRX_PW }}
+        run: python main.py --now
+
+      - name: 대시보드 커밋 및 배포
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # 특정 파일만 명시적으로 스테이지 (git add -A 금지 — .env 등 민감 파일 방지)
+          git add data/recommendation_history.json docs/
+          # 변경 없을 시 빈 커밋 방지
+          git diff --staged --quiet || git commit -m "chore: update dashboard $(date +'%Y-%m-%d')"
+          git push
