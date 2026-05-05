@@ -1,80 +1,5 @@
 [
   {
-    "week": "2026-04-24",
-    "stocks": [
-      {
-        "ticker": "330590",
-        "name": "롯데리츠",
-        "buy_price": 4805,
-        "shares": 208,
-        "invested": 999440
-      },
-      {
-        "ticker": "006910",
-        "name": "보성파워텍",
-        "buy_price": 11870,
-        "shares": 84,
-        "invested": 997080
-      },
-      {
-        "ticker": "097230",
-        "name": "HJ중공업",
-        "buy_price": 32650,
-        "shares": 30,
-        "invested": 979500
-      },
-      {
-        "ticker": "010820",
-        "name": "퍼스텍",
-        "buy_price": 15310,
-        "shares": 65,
-        "invested": 995150
-      },
-      {
-        "ticker": "007690",
-        "name": "국도화학",
-        "buy_price": 40750,
-        "shares": 24,
-        "invested": 978000
-      },
-      {
-        "ticker": "053610",
-        "name": "프로텍",
-        "buy_price": 73900,
-        "shares": 13,
-        "invested": 960700
-      },
-      {
-        "ticker": "094820",
-        "name": "일진파워",
-        "buy_price": 19430,
-        "shares": 51,
-        "invested": 990930
-      },
-      {
-        "ticker": "355150",
-        "name": "코스텍시스",
-        "buy_price": 33150,
-        "shares": 30,
-        "invested": 994500
-      },
-      {
-        "ticker": "217330",
-        "name": "싸이토젠",
-        "buy_price": 5240,
-        "shares": 190,
-        "invested": 995600
-      },
-      {
-        "ticker": "265560",
-        "name": "영화테크",
-        "buy_price": 10040,
-        "shares": 99,
-        "invested": 993960
-      }
-    ]
-  },
-  {
     "week": "2026-05-05",
     "stocks": [
       {
@@ -82,70 +7,100 @@
         "name": "파미셀",
         "buy_price": 20250,
         "shares": 49,
-        "invested": 992250
+        "invested": 992250,
+        "score": 15,
+        "sub_score": 0.7035,
+        "conditions": {}
       },
       {
         "ticker": "042660",
         "name": "한화오션",
         "buy_price": 133000,
         "shares": 7,
-        "invested": 931000
+        "invested": 931000,
+        "score": 14,
+        "sub_score": 0.6239,
+        "conditions": {}
       },
       {
         "ticker": "229640",
         "name": "LS에코에너지",
         "buy_price": 90400,
         "shares": 11,
-        "invested": 994400
+        "invested": 994400,
+        "score": 14,
+        "sub_score": 0.5776,
+        "conditions": {}
       },
       {
         "ticker": "254490",
         "name": "미래반도체",
         "buy_price": 29250,
         "shares": 34,
-        "invested": 994500
+        "invested": 994500,
+        "score": 13,
+        "sub_score": 0.6593,
+        "conditions": {}
       },
       {
         "ticker": "237690",
         "name": "에스티팜",
         "buy_price": 153800,
         "shares": 6,
-        "invested": 922800
+        "invested": 922800,
+        "score": 13,
+        "sub_score": 0.6328,
+        "conditions": {}
       },
       {
         "ticker": "001200",
         "name": "유진투자증권",
         "buy_price": 5980,
         "shares": 167,
-        "invested": 998660
+        "invested": 998660,
+        "score": 13,
+        "sub_score": 0.6231,
+        "conditions": {}
       },
       {
         "ticker": "006650",
         "name": "대한유화",
         "buy_price": 179900,
         "shares": 5,
-        "invested": 899500
+        "invested": 899500,
+        "score": 13,
+        "sub_score": 0.6178,
+        "conditions": {}
       },
       {
         "ticker": "028100",
         "name": "동아지질",
         "buy_price": 18520,
         "shares": 53,
-        "invested": 981560
+        "invested": 981560,
+        "score": 13,
+        "sub_score": 0.5740,
+        "conditions": {}
       },
       {
         "ticker": "230360",
         "name": "에코마케팅",
         "buy_price": 16000,
         "shares": 62,
-        "invested": 992000
+        "invested": 992000,
+        "score": 12,
+        "sub_score": 0.7173,
+        "conditions": {}
       },
       {
         "ticker": "062040",
         "name": "산일전기",
         "buy_price": 333500,
         "shares": 2,
-        "invested": 667000
+        "invested": 667000,
+        "score": 12,
+        "sub_score": 0.6894,
+        "conditions": {}
       }
     ]
   }

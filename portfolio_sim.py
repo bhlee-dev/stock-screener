@@ -113,7 +113,9 @@ def _get_current_prices_batch(tickers: list[str]) -> dict[str, int]:
                 if "종가" in kospi_df.columns:
                     for t in tickers:
                         if t in kospi_df.index:
-                            prices[t] = int(kospi_df.loc[t, "종가"])
+                            val = int(kospi_df.loc[t, "종가"])
+                            if val > 0:
+                                prices[t] = val
                 break
         except Exception:
             pass
@@ -129,7 +131,9 @@ def _get_current_prices_batch(tickers: list[str]) -> dict[str, int]:
         if kosdaq_df is not None and not kosdaq_df.empty and "종가" in kosdaq_df.columns:
             for t in tickers:
                 if t in kosdaq_df.index and t not in prices:
-                    prices[t] = int(kosdaq_df.loc[t, "종가"])
+                    val = int(kosdaq_df.loc[t, "종가"])
+                    if val > 0:
+                        prices[t] = val
     except Exception as e:
         logger.warning(f"코스닥 현재가 일괄 조회 실패: {e}")
 

@@ -17,13 +17,15 @@ _TIMEOUT = 15
 
 # 조건명 → 한국어 레이블 + 점수 표시
 _CONDITION_LABELS = {
-    "ma_uptrend":               ("200일선 우상향", 2),
-    "base_formation":           ("베이스 형성",   1),
-    "bollinger_contraction":    ("볼린저 수축",   2),
-    "volume_breakout":          ("거래량 돌파 발산", 3),
-    "eps_growth":               ("EPS 연속 증가", 2),
-    "revenue_growth":           ("매출 증가",     1),
-    "operating_profit_growth":  ("영업이익 증가", 1),
+    "ma_uptrend":               ("200일선 우상향",    2),
+    "ma_full_alignment":        ("강세 배열",         1),
+    "base_formation":           ("베이스 형성",       1),
+    "bollinger_contraction":    ("볼린저 수축",       2),
+    "volume_breakout":          ("거래량 돌파 발산",  3),
+    "rsi_not_overbought":       ("RSI 과매수 아님",   1),
+    "eps_growth":               ("EPS 연속 증가",     2),
+    "revenue_growth":           ("매출 증가",         1),
+    "operating_profit_growth":  ("영업이익 증가",     1),
     "institution_net_buy":      ("기관 순매수 10일+", 2),
     "foreign_net_buy":          ("외국인 순매수 10일+", 2),
 }
