@@ -174,31 +174,79 @@ function retHtml(v) {
 (function() {
   const c = DATA.chart;
   if (!c || !c.labels.length) return;
+
+  /* 그라디언트 채움 + 0% 기준선 인라인 플러그인 */
+  const areaPlugin = {
+    id: 'dynamicArea',
+    beforeDraw(chart) {
+      const { ctx, chartArea, scales: { y } } = chart;
+      if (!chartArea || !y) return;
+      const yZero = y.getPixelForValue(0);
+      const ratio = Math.min(Math.max(
+        (yZero - chartArea.top) / (chartArea.bottom - chartArea.top), 0), 1);
+      const grad = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+      grad.addColorStop(0,     'rgba(63,185,80,0.20)');
+      grad.addColorStop(ratio, 'rgba(63,185,80,0.04)');
+      grad.addColorStop(ratio, 'rgba(248,81,73,0.04)');
+      grad.addColorStop(1,     'rgba(248,81,73,0.20)');
+      chart.data.datasets[0].backgroundColor = grad;
+    },
+    afterDraw(chart) {
+      const { ctx, chartArea, scales: { y } } = chart;
+      if (!y) return;
+      const yZero = y.getPixelForValue(0);
+      if (yZero < chartArea.top || yZero > chartArea.bottom) return;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(chartArea.left, yZero);
+      ctx.lineTo(chartArea.right, yZero);
+      ctx.strokeStyle = 'rgba(255,255,255,0.30)';
+      ctx.lineWidth   = 1;
+      ctx.setLineDash([5, 5]);
+      ctx.stroke();
+      ctx.restore();
+    }
+  };
+
   new Chart(document.getElementById('returnChart'), {
     type: 'line',
+    plugins: [areaPlugin],
     data: {
       labels: c.labels,
       datasets: [{
-        label: '누적 수익률 (%)',
+        label: '누적 수익률',
         data: c.cumulative,
         borderColor: '#3fb950',
-        backgroundColor: 'rgba(63,185,80,0.08)',
+        backgroundColor: 'rgba(63,185,80,0.1)',
         fill: true,
         tension: 0.3,
         pointRadius: 5,
         pointHoverRadius: 7,
+        pointBackgroundColor: c.cumulative.map(v => v >= 0 ? '#3fb950' : '#f85149'),
+        pointBorderColor:     c.cumulative.map(v => v >= 0 ? '#3fb950' : '#f85149'),
+        segment: {
+          borderColor: ctx => ctx.p1.parsed.y >= 0 ? '#3fb950' : '#f85149',
+        }
       }]
     },
     options: {
       responsive: true,
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { label: ctx => sign(ctx.raw) + ctx.raw.toFixed(2) + '%' } }
+        tooltip: {
+          callbacks: {
+            title: items => items[0].label,
+            label: ctx => {
+              const v = ctx.raw;
+              return ` 누적 수익률: ${sign(v)}${v.toFixed(2)}%`;
+            }
+          }
+        }
       },
       scales: {
         y: {
           ticks: { color: '#8b949e', callback: v => sign(v) + v + '%' },
-          grid: { color: 'rgba(255,255,255,0.06)' }
+          grid:  { color: 'rgba(255,255,255,0.06)' }
         },
         x: { ticks: { color: '#8b949e' } }
       }
