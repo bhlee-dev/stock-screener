@@ -32,6 +32,13 @@ _COND_KEYS = [
     ("foreign_net_buy",         "외국인", "외국인 순매수"),
 ]
 
+_COND_SCORES = {
+    "ma_uptrend": 2, "ma_full_alignment": 1, "base_formation": 1,
+    "bollinger_contraction": 2, "volume_breakout": 3, "rsi_not_overbought": 1,
+    "eps_growth": 2, "revenue_growth": 1, "operating_profit_growth": 1,
+    "institution_net_buy": 2, "foreign_net_buy": 2,
+}
+
 
 # ── 데이터 수집 ───────────────────────────────────────────────────────────────
 
@@ -121,6 +128,7 @@ def _build_payload(enriched: list, overall: dict | None) -> dict:
         "cond_keys":   [k for k, _, _ in _COND_KEYS],
         "cond_labels": [s for _, s, _ in _COND_KEYS],
         "cond_titles": [t for _, _, t in _COND_KEYS],
+        "cond_scores": [_COND_SCORES.get(k, 1) for k, _, _ in _COND_KEYS],
         "history":     enriched,
         "overall":     overall,
         "chart": {
@@ -171,6 +179,12 @@ _HTML = """\
     .kpi-value{line-height:1.15}
     .kpi-sub{font-size:.78rem;color:#8b949e;margin-top:.4rem}
     footer{border-top:1px solid #30363d;padding-top:1rem}
+    .modal-content{background:#161b22;border:1px solid #30363d}
+    .modal-header{border-bottom:1px solid #30363d}
+    .modal-footer{border-top:1px solid #30363d}
+    .clickable-row{cursor:pointer}
+    .detail-score-bar{height:10px;border-radius:5px;background:#30363d;overflow:hidden;flex:1}
+    .detail-score-fill{height:100%;border-radius:5px;transition:width .4s}
   </style>
 </head>
 <body>
@@ -243,6 +257,22 @@ _HTML = """\
   </footer>
 </div>
 
+<!-- 종목 상세 모달 -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header py-3">
+        <div>
+          <h5 class="modal-title fw-bold mb-1" id="modalStockName"></h5>
+          <span class="badge bg-secondary" id="modalStockTicker"></span>
+        </div>
+        <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body pt-3" id="modalBody"></div>
+    </div>
+  </div>
+</div>
+
 <script>
 /*
  * 보안 고지: 아래 DATA 객체는 주식 시장 공개 데이터(종목코드·가격·점수)만 포함합니다.
@@ -250,16 +280,81 @@ _HTML = """\
  */
 const DATA = __DATA_JSON__;
 
-const MAX  = DATA.max_score;
-const KEYS = DATA.cond_keys;
-const LBLS = DATA.cond_labels;
-const TTLS = DATA.cond_titles;
+const MAX    = DATA.max_score;
+const KEYS   = DATA.cond_keys;
+const LBLS   = DATA.cond_labels;
+const TTLS   = DATA.cond_titles;
+const SCORES = DATA.cond_scores;
+
+const STOCK_CACHE = {};
 
 function fmt(n)  { return Number(n).toLocaleString('ko-KR'); }
 function sign(v) { return v >= 0 ? '+' : ''; }
 function retHtml(v) {
   const cls = v > 0 ? 'text-danger' : v < 0 ? 'text-primary' : 'text-secondary';
   return `<span class="${cls} fw-semibold">${sign(v)}${v.toFixed(1)}%</span>`;
+}
+
+function showDetail(cacheKey) {
+  const s = STOCK_CACHE[cacheKey];
+  if (!s) return;
+  document.getElementById('modalStockName').textContent = s.name;
+  document.getElementById('modalStockTicker').textContent = s.ticker;
+
+  const pct = MAX > 0 ? Math.round(s.score / MAX * 100) : 0;
+  const clr = pct >= 70 ? '#3fb950' : pct >= 40 ? '#d29922' : '#8b949e';
+
+  let html = `
+    <div class="mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <span class="text-muted small">종합 점수</span>
+        <span class="fw-bold" style="color:${clr}">${s.score} / ${MAX}</span>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <div class="detail-score-bar">
+          <div class="detail-score-fill" style="width:${pct}%;background:${clr}"></div>
+        </div>
+        <span class="small text-muted">${pct}%</span>
+      </div>
+    </div>`;
+
+  const hasCond = s.conditions && Object.keys(s.conditions).length > 0;
+  if (hasCond) {
+    const bodyRows = KEYS.map((k, i) => {
+      const ok = !!s.conditions[k];
+      const pts = SCORES[i];
+      return `<tr>
+        <td>${TTLS[i]}</td>
+        <td class="text-center"><span class="dot ${ok ? 'dot-ok' : 'dot-no'}">${ok ? '●' : '○'}</span></td>
+        <td class="text-center text-muted">${pts}</td>
+        <td class="text-center fw-semibold" style="color:${ok ? '#3fb950' : '#484f58'}">${ok ? pts : 0}</td>
+      </tr>`;
+    }).join('');
+    html += `
+      <table class="table table-sm small mb-0">
+        <thead class="table-light">
+          <tr><th>조건</th><th class="text-center">충족</th>
+              <th class="text-center text-muted">배점</th><th class="text-center">획득</th></tr>
+        </thead>
+        <tbody>${bodyRows}</tbody>
+        <tfoot>
+          <tr class="fw-bold" style="border-top:1px solid #30363d">
+            <td colspan="2">합계</td>
+            <td class="text-center text-muted">${MAX}</td>
+            <td class="text-center" style="color:${clr}">${s.score}</td>
+          </tr>
+        </tfoot>
+      </table>`;
+  } else {
+    html += `<div class="text-center text-muted py-3 small">
+      <div style="font-size:1.8rem;margin-bottom:.5rem">📋</div>
+      조건 상세 데이터가 없습니다.<br>
+      <span style="font-size:.75rem">다음 스크리너 실행 후 표시됩니다.</span>
+    </div>`;
+  }
+
+  document.getElementById('modalBody').innerHTML = html;
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('detailModal')).show();
 }
 
 /* 요약 카드 */
@@ -313,6 +408,8 @@ function retHtml(v) {
   if (!h.length) return;
   const latest = h[h.length - 1];
   const rows = latest.stocks.map((s, i) => {
+    const cacheKey = `${latest.week}_${s.ticker}`;
+    STOCK_CACHE[cacheKey] = s;
     const pct = Math.round(s.score / MAX * 100);
     const scoreCell = `<td>
       <div class="score-wrap">
@@ -323,7 +420,7 @@ function retHtml(v) {
       const ok = s.conditions && s.conditions[k];
       return `<span class="dot ${ok ? 'dot-ok' : 'dot-no'}" title="${TTLS[idx]}">${ok ? '●' : '○'}</span>`;
     }).join('');
-    return `<tr>
+    return `<tr class="clickable-row" onclick="showDetail('${cacheKey}')">
       <td class="text-muted">${i+1}</td>
       <td><strong>${s.name}</strong></td>
       <td><span class="badge bg-secondary">${s.ticker}</span></td>
@@ -449,12 +546,14 @@ function retHtml(v) {
   acc.innerHTML = history.map((entry, i) => {
     const id = `acc${i}`;
     const rows = entry.stocks.map((s, j) => {
+      const cacheKey = `${entry.week}_${s.ticker}`;
+      STOCK_CACHE[cacheKey] = s;
       const pct = Math.round(s.score / MAX * 100);
       const dots = KEYS.map((k, idx) => {
         const ok = s.conditions && s.conditions[k];
         return `<span class="dot ${ok ? 'dot-ok' : 'dot-no'}" title="${TTLS[idx]}">${ok ? '●' : '○'}</span>`;
       }).join('');
-      return `<tr>
+      return `<tr class="clickable-row" onclick="showDetail('${cacheKey}')">
         <td>${j+1}</td>
         <td>${s.name} <span class="badge bg-secondary">${s.ticker}</span></td>
         <td><div class="score-wrap">
