@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="build" content="2026-05-05">
+  <meta name="build" content="2026-05-06">
   <title>KRX 주간 종목 스크리너</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
@@ -43,7 +43,7 @@
 <nav class="navbar navbar-dark mb-4">
   <div class="container-fluid px-4">
     <span class="navbar-brand fw-bold">📊 KRX 주간 종목 스크리너</span>
-    <span class="text-light small">최종 업데이트: 2026-05-05</span>
+    <span class="text-light small">최종 업데이트: 2026-05-06</span>
   </div>
 </nav>
 
@@ -113,7 +113,7 @@
  * 보안 고지: 아래 DATA 객체는 주식 시장 공개 데이터(종목코드·가격·점수)만 포함합니다.
  * API 키, 사용자 자격증명, 개인식별정보는 일절 포함되지 않습니다.
  */
-const DATA = {"updated_at": "2026-05-05", "latest_week": "2026-05-05", "max_score": 18, "cond_keys": ["ma_uptrend", "ma_full_alignment", "base_formation", "bollinger_contraction", "volume_breakout", "rsi_not_overbought", "eps_growth", "revenue_growth", "operating_profit_growth", "institution_net_buy", "foreign_net_buy"], "cond_labels": ["MA200", "MA배열", "베이스", "볼린저", "거래량", "RSI", "EPS", "매출", "영업익", "기관", "외국인"], "cond_titles": ["200일선 우상향", "강세 배열", "베이스 형성", "볼린저 수축", "거래량 돌파", "RSI 과매수 아님", "EPS 성장", "매출 성장", "영업이익 성장", "기관 순매수", "외국인 순매수"], "history": [{"week": "2026-05-05", "stocks": [{"ticker": "005690", "name": "파미셀", "buy_price": 20250, "current_price": 20250, "return_pct": 0.0, "score": 15, "conditions": {}}, {"ticker": "042660", "name": "한화오션", "buy_price": 133000, "current_price": 133000, "return_pct": 0.0, "score": 14, "conditions": {}}, {"ticker": "229640", "name": "LS에코에너지", "buy_price": 90400, "current_price": 90400, "return_pct": 0.0, "score": 14, "conditions": {}}, {"ticker": "254490", "name": "미래반도체", "buy_price": 29250, "current_price": 29250, "return_pct": 0.0, "score": 13, "conditions": {}}, {"ticker": "237690", "name": "에스티팜", "buy_price": 153800, "current_price": 153800, "return_pct": 0.0, "score": 13, "conditions": {}}, {"ticker": "001200", "name": "유진투자증권", "buy_price": 5980, "current_price": 5980, "return_pct": 0.0, "score": 13, "conditions": {}}, {"ticker": "006650", "name": "대한유화", "buy_price": 179900, "current_price": 179900, "return_pct": 0.0, "score": 13, "conditions": {}}, {"ticker": "028100", "name": "동아지질", "buy_price": 18520, "current_price": 18520, "return_pct": 0.0, "score": 13, "conditions": {}}, {"ticker": "230360", "name": "에코마케팅", "buy_price": 16000, "current_price": 16000, "return_pct": 0.0, "score": 12, "conditions": {}}, {"ticker": "062040", "name": "산일전기", "buy_price": 333500, "current_price": 333500, "return_pct": 0.0, "score": 12, "conditions": {}}], "week_return_pct": 0.0, "cumulative_return_pct": 0.0}], "overall": {"total_invested_man": 937, "total_current_man": 937, "overall_return_pct": 0.0, "weeks": 1}, "chart": {"labels": ["2026-05-05"], "cumulative": [0.0]}};
+const DATA = {"updated_at": "2026-05-06", "latest_week": "2026-05-05", "max_score": 18, "cond_keys": ["ma_uptrend", "ma_full_alignment", "base_formation", "bollinger_contraction", "volume_breakout", "rsi_not_overbought", "eps_growth", "revenue_growth", "operating_profit_growth", "institution_net_buy", "foreign_net_buy"], "cond_labels": ["MA200", "MA배열", "베이스", "볼린저", "거래량", "RSI", "EPS", "매출", "영업익", "기관", "외국인"], "cond_titles": ["200일선 우상향", "강세 배열", "베이스 형성", "볼린저 수축", "거래량 돌파", "RSI 과매수 아님", "EPS 성장", "매출 성장", "영업이익 성장", "기관 순매수", "외국인 순매수"], "history": [{"week": "2026-05-05", "stocks": [{"ticker": "005690", "name": "파미셀", "buy_price": 20250, "current_price": 20100, "return_pct": -0.74, "score": 15, "conditions": {}}, {"ticker": "042660", "name": "한화오션", "buy_price": 133000, "current_price": 130200, "return_pct": -2.11, "score": 14, "conditions": {}}, {"ticker": "229640", "name": "LS에코에너지", "buy_price": 90400, "current_price": 92100, "return_pct": 1.88, "score": 14, "conditions": {}}, {"ticker": "254490", "name": "미래반도체", "buy_price": 29250, "current_price": 29600, "return_pct": 1.2, "score": 13, "conditions": {}}, {"ticker": "237690", "name": "에스티팜", "buy_price": 153800, "current_price": 150000, "return_pct": -2.47, "score": 13, "conditions": {}}, {"ticker": "001200", "name": "유진투자증권", "buy_price": 5980, "current_price": 6400, "return_pct": 7.02, "score": 13, "conditions": {}}, {"ticker": "006650", "name": "대한유화", "buy_price": 179900, "current_price": 170700, "return_pct": -5.11, "score": 13, "conditions": {}}, {"ticker": "028100", "name": "동아지질", "buy_price": 18520, "current_price": 17740, "return_pct": -4.21, "score": 13, "conditions": {}}, {"ticker": "230360", "name": "에코마케팅", "buy_price": 16000, "current_price": 16000, "return_pct": 0.0, "score": 12, "conditions": {}}, {"ticker": "062040", "name": "산일전기", "buy_price": 333500, "current_price": 319500, "return_pct": -4.2, "score": 12, "conditions": {}}], "week_return_pct": -0.69, "cumulative_return_pct": -0.69}], "overall": {"total_invested_man": 937, "total_current_man": 931, "overall_return_pct": -0.69, "weeks": 1}, "chart": {"labels": ["2026-05-05"], "cumulative": [-0.69]}};
 
 const MAX  = DATA.max_score;
 const KEYS = DATA.cond_keys;
