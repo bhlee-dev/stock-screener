@@ -37,6 +37,9 @@ logging.basicConfig(
         logging.FileHandler(config.LOG_FILE, encoding="utf-8"),
     ],
 )
+# Windows 콘솔 인코딩을 UTF-8로 강제 설정
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 logger = logging.getLogger(__name__)
 
 
