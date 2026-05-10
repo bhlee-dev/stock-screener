@@ -226,12 +226,49 @@ def main() -> None:
         metavar="N",
         help="병렬 처리 워커 수 (기본값: 10)",
     )
+    parser.add_argument(
+        "--backtest",
+        action="store_true",
+        help="Walk-Forward 백테스트 실행 (기술 지표만, 기본 52주)",
+    )
+    parser.add_argument(
+        "--bt-weeks",
+        type=int,
+        default=config.BT_WEEKS,
+        metavar="W",
+        help=f"백테스트 기간 (주, 기본값: {config.BT_WEEKS})",
+    )
+    parser.add_argument(
+        "--bt-top-n",
+        type=int,
+        default=config.BT_TOP_N,
+        metavar="N",
+        help=f"백테스트 포트폴리오 종목 수 (기본값: {config.BT_TOP_N})",
+    )
+    parser.add_argument(
+        "--refresh-cache",
+        action="store_true",
+        help="OHLCV 캐시 강제 재다운로드",
+    )
     args = parser.parse_args()
 
     # 자격증명 확인 (경고만, 중단하지 않음 — 일부 기능은 크리덴셜 없이도 동작)
     _validate_credentials()
 
-    if args.now:
+    if args.backtest:
+        logger.info(f"백테스트 모드 (--backtest) | {args.bt_weeks}주 | Top{args.bt_top_n}")
+        from backtest import run_backtest
+        run_backtest(
+            weeks=args.bt_weeks,
+            top_n=args.bt_top_n,
+            refresh_cache=args.refresh_cache,
+        )
+        try:
+            from generate_dashboard import generate_dashboard
+            generate_dashboard()
+        except Exception as dash_err:
+            logger.warning(f"대시보드 생성 실패 (비치명적): {dash_err}")
+    elif args.now:
         # 즉시 1회 실행 모드
         logger.info("즉시 실행 모드 (--now)")
         run_screener(n_workers=args.workers)

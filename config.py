@@ -59,3 +59,10 @@ LOG_FILE = "screener_log.txt"
 SCHEDULE_DAY_OF_WEEK = "mon"    # 매주 월요일
 SCHEDULE_HOUR = 8               # 오전 8시
 SCHEDULE_MINUTE = 0
+
+# --- 백테스트 파라미터 ---
+BT_TOP_N = 10                   # 포트폴리오 종목 수
+BT_MIN_SCORE_TECH = 5           # 기술 지표만 사용 시 최소 점수 (기술 최대 10점 중 50%)
+BT_INVEST_PER_STOCK = 1_000_000 # 종목당 투자금 (100만원)
+BT_WEEKS = 52                   # 기본 백테스트 기간 (주)
+BT_CACHE_REFRESH_DAYS = 7       # OHLCV 캐시 유효 기간 (일)

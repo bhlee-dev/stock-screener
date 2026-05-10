@@ -52,6 +52,12 @@ SCORE_TABLE = {
 
 MAX_SCORE = sum(SCORE_TABLE.values())  # 18점
 
+TECH_ONLY_KEYS = [
+    "ma_uptrend", "ma_full_alignment", "base_formation",
+    "bollinger_contraction", "volume_breakout", "rsi_not_overbought",
+]
+MAX_SCORE_TECH = sum(SCORE_TABLE[k] for k in TECH_ONLY_KEYS)  # 10점
+
 
 def _calc_sub_score(
     df: pd.DataFrame,

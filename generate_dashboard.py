@@ -15,6 +15,7 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 _HISTORY_FILE = Path(__file__).parent / "data" / "recommendation_history.json"
+_BACKTEST_FILE = Path(__file__).parent / "data" / "backtest_results.json"
 _DOCS_DIR = Path(__file__).parent / "docs"
 _MAX_SCORE = 18
 
@@ -50,6 +51,16 @@ def _load_history() -> list:
     except Exception as e:
         logger.error(f"추천 이력 로드 실패: {e}")
         return []
+
+
+def _load_backtest() -> dict | None:
+    if not _BACKTEST_FILE.exists():
+        return None
+    try:
+        return json.loads(_BACKTEST_FILE.read_text(encoding="utf-8"))
+    except Exception as e:
+        logger.error(f"백테스트 결과 로드 실패: {e}")
+        return None
 
 
 def _get_current_prices(tickers: list[str]) -> dict[str, int]:
@@ -135,6 +146,7 @@ def _build_payload(enriched: list, overall: dict | None) -> dict:
             "labels":     [e["week"] for e in enriched],
             "cumulative": [e["cumulative_return_pct"] for e in enriched],
         },
+        "backtest": _load_backtest(),
     }
 
 
@@ -185,17 +197,49 @@ _HTML = """\
     .clickable-row{cursor:pointer}
     .detail-score-bar{height:10px;border-radius:5px;background:#30363d;overflow:hidden;flex:1}
     .detail-score-fill{height:100%;border-radius:5px;transition:width .4s}
+    .nav-tabs .nav-link.active{color:#e6edf3!important;border-color:#30363d #30363d #161b22!important;background:#161b22!important}
+    .nav-tabs .nav-link:hover{color:#e6edf3!important;border-color:transparent}
+    .bt-kpi-card{text-align:center;padding:1.5rem 1rem}
+    .bt-kpi-label{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8b949e;margin-bottom:.4rem}
+    .bt-kpi-value{font-size:1.6rem;font-weight:700;line-height:1.2}
+    .bt-kpi-sub{font-size:.75rem;color:#8b949e;margin-top:.3rem}
   </style>
 </head>
 <body>
 
-<nav class="navbar navbar-dark mb-4">
+<nav class="navbar navbar-dark mb-0">
   <div class="container-fluid px-4">
     <span class="navbar-brand fw-bold">📊 KRX 주간 종목 스크리너</span>
     <span class="text-light small">최종 업데이트: __UPDATED_AT__</span>
   </div>
 </nav>
 
+<!-- 탭 네비게이션 -->
+<div style="background:#161b22;border-bottom:1px solid #30363d" class="mb-4">
+  <div class="container-lg px-4">
+    <ul class="nav nav-tabs border-0" id="mainTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="tab-recommend-btn"
+                data-bs-toggle="tab" data-bs-target="#tab-recommend"
+                type="button" role="tab" style="color:#8b949e;border-color:transparent">
+          추천 현황
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tab-backtest-btn"
+                data-bs-toggle="tab" data-bs-target="#tab-backtest"
+                type="button" role="tab" style="color:#8b949e;border-color:transparent">
+          백테스트 성과
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="tab-content">
+
+<!-- ===== 탭 1: 추천 현황 ===== -->
+<div class="tab-pane fade show active" id="tab-recommend" role="tabpanel">
 <div class="container-lg">
 
   <!-- 요약 카드 -->
@@ -256,6 +300,97 @@ _HTML = """\
     주가 데이터는 KRX 제공이며 실시간이 아닙니다.
   </footer>
 </div>
+</div><!-- /tab-recommend -->
+
+<!-- ===== 탭 2: 백테스트 성과 ===== -->
+<div class="tab-pane fade" id="tab-backtest" role="tabpanel">
+<div class="container-lg" id="btContainer">
+
+  <!-- 데이터 없음 안내 (JS로 숨김 처리) -->
+  <div id="btEmpty" class="text-center py-5 text-muted">
+    <div style="font-size:2.5rem;margin-bottom:1rem">🔬</div>
+    <h5>백테스트 데이터가 없습니다</h5>
+    <p class="small mt-2">
+      아래 명령어로 백테스트를 실행하면 결과가 표시됩니다.<br>
+      <code>python main.py --backtest</code>
+    </p>
+    <p class="small text-muted" style="font-size:.75rem">
+      최초 실행 시 OHLCV 캐시 빌드로 10~20분 소요됩니다.
+    </p>
+  </div>
+
+  <!-- 백테스트 결과 (데이터 있을 때만 표시) -->
+  <div id="btResult" style="display:none">
+
+    <!-- KPI 카드 -->
+    <div class="row g-3 mb-4" id="btKpiCards"></div>
+
+    <!-- 차트 + 거래 통계 -->
+    <div class="row g-3 mb-4">
+      <div class="col-lg-8">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-white d-flex align-items-center gap-2">
+            <h5 class="mb-0">누적 수익률 vs KOSPI</h5>
+            <span class="badge bg-secondary" id="btPeriodBadge"></span>
+          </div>
+          <div class="card-body">
+            <canvas id="btChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-white"><h5 class="mb-0">거래 통계</h5></div>
+          <div class="card-body" id="btStats"></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- 거래 기록 테이블 -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-white d-flex align-items-center gap-2">
+        <h5 class="mb-0">거래 기록</h5>
+        <span class="badge bg-secondary" id="btTradeCount"></span>
+        <span class="text-muted small ms-auto" id="btGenDate"></span>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0 small">
+            <thead class="table-light">
+              <tr>
+                <th>종목명</th><th>코드</th><th>점수</th>
+                <th>매수일</th><th>매도일</th>
+                <th>매수가</th><th>매도가</th>
+                <th>수익률</th><th>보유(주)</th><th>사유</th>
+              </tr>
+            </thead>
+            <tbody id="btTradeBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 주의사항 -->
+    <div class="card shadow-sm mb-4" style="border-color:#d29922!important">
+      <div class="card-body small text-muted">
+        <strong style="color:#d29922">⚠️ 백테스트 주의사항</strong><br>
+        <ul class="mb-0 mt-2 ps-3" id="btCaveats"></ul>
+      </div>
+    </div>
+
+  </div><!-- /btResult -->
+
+  <hr class="section-divider">
+  <footer class="text-center text-muted small mb-4">
+    ⚠️ 본 대시보드는 투자 참고용 시뮬레이션입니다. 실제 투자 권유가 아닙니다.<br>
+    주가 데이터는 KRX 제공이며 실시간이 아닙니다.
+  </footer>
+</div>
+</div><!-- /tab-backtest -->
+
+</div><!-- /tab-content -->
 
 <!-- 종목 상세 모달 -->
 <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
@@ -591,6 +726,180 @@ function showDetail(cacheKey) {
         </div>
       </div>`;
   }).join('');
+})();
+
+/* ── 백테스트 탭 렌더링 ─────────────────────────────────────── */
+(function() {
+  const BT = DATA.backtest;
+  if (!BT || !BT.performance) return;
+
+  document.getElementById('btEmpty').style.display = 'none';
+  document.getElementById('btResult').style.display = '';
+
+  const p = BT.performance;
+  const meta = BT.meta || {};
+  const period = meta.backtest_period || {};
+
+  /* 기간 배지 */
+  if (period.start && period.end) {
+    document.getElementById('btPeriodBadge').textContent =
+      `${period.start} ~ ${period.end} (${period.weeks}주)`;
+  }
+  if (meta.generated_at) {
+    document.getElementById('btGenDate').textContent = `생성일: ${meta.generated_at}`;
+  }
+
+  /* KPI 카드 */
+  function kpiCard(label, value, sub, color) {
+    return `<div class="col-6 col-md-3">
+      <div class="card shadow-sm h-100">
+        <div class="bt-kpi-card">
+          <div class="bt-kpi-label">${label}</div>
+          <div class="bt-kpi-value" style="color:${color}">${value}</div>
+          ${sub ? `<div class="bt-kpi-sub">${sub}</div>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  const alphaColor = p.alpha_pct >= 0 ? '#3fb950' : '#f85149';
+  const totColor   = p.total_return_pct >= 0 ? '#3fb950' : '#f85149';
+
+  document.getElementById('btKpiCards').innerHTML =
+    kpiCard('전략 총 수익률',
+      `${sign(p.total_return_pct)}${p.total_return_pct.toFixed(1)}%`,
+      `KOSPI ${sign(p.kospi_return_pct)}${p.kospi_return_pct.toFixed(1)}%`, totColor) +
+    kpiCard('KOSPI 대비 알파',
+      `${sign(p.alpha_pct)}${p.alpha_pct.toFixed(1)}%`,
+      '초과 수익률', alphaColor) +
+    kpiCard('승률',
+      `${p.win_rate_pct.toFixed(1)}%`,
+      `${p.total_trades}건 거래`, p.win_rate_pct >= 50 ? '#3fb950' : '#f85149') +
+    kpiCard('최대 낙폭(MDD)',
+      `${p.mdd_pct.toFixed(1)}%`,
+      `샤프 ${p.sharpe_ratio.toFixed(2)}`, '#d29922');
+
+  /* 거래 통계 카드 */
+  document.getElementById('btStats').innerHTML = `
+    <ul class="list-unstyled small mb-0">
+      <li class="d-flex justify-content-between py-1" style="border-bottom:1px solid #30363d">
+        <span class="text-muted">총 거래 횟수</span>
+        <strong>${p.total_trades}건</strong>
+      </li>
+      <li class="d-flex justify-content-between py-1" style="border-bottom:1px solid #30363d">
+        <span class="text-muted">평균 보유 기간</span>
+        <strong>${p.avg_holding_weeks}주</strong>
+      </li>
+      <li class="d-flex justify-content-between py-1" style="border-bottom:1px solid #30363d">
+        <span class="text-muted">평균 거래 수익률</span>
+        <strong style="color:${p.avg_trade_return_pct >= 0 ? '#3fb950' : '#f85149'}">
+          ${sign(p.avg_trade_return_pct)}${p.avg_trade_return_pct.toFixed(2)}%
+        </strong>
+      </li>
+      <li class="d-flex justify-content-between py-1" style="border-bottom:1px solid #30363d">
+        <span class="text-muted">샤프 비율</span>
+        <strong>${p.sharpe_ratio.toFixed(3)}</strong>
+      </li>
+      <li class="d-flex justify-content-between py-1">
+        <span class="text-muted">최종 평가금</span>
+        <strong>${fmt(Math.round(p.final_value / 10000))}만원</strong>
+      </li>
+    </ul>
+    <div class="mt-3 small text-muted" style="font-size:.72rem">
+      초기 투자금 ${fmt(p.initial_capital / 10000)}만원 기준<br>
+      전략: 기술 지표만 사용, Top-N 탈락 시 매도
+    </div>`;
+
+  /* 누적 수익률 vs KOSPI 차트 */
+  const ws = BT.weekly_series || [];
+  if (ws.length) {
+    new Chart(document.getElementById('btChart'), {
+      type: 'line',
+      data: {
+        labels: ws.map(w => w.date),
+        datasets: [
+          {
+            label: '백테스트 전략',
+            data: ws.map(w => w.portfolio_return_pct),
+            borderColor: '#3fb950',
+            backgroundColor: 'rgba(63,185,80,0.08)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 3,
+            pointHoverRadius: 6,
+            segment: { borderColor: ctx => ctx.p1.parsed.y >= 0 ? '#3fb950' : '#f85149' }
+          },
+          {
+            label: 'KOSPI',
+            data: ws.map(w => w.kospi_return_pct),
+            borderColor: '#58a6ff',
+            backgroundColor: 'transparent',
+            fill: false,
+            tension: 0.3,
+            pointRadius: 2,
+            pointHoverRadius: 5,
+            borderDash: [6, 3],
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            labels: { color: '#8b949e', boxWidth: 20, padding: 16 }
+          },
+          tooltip: {
+            callbacks: {
+              label: ctx => {
+                const v = ctx.raw;
+                return ` ${ctx.dataset.label}: ${sign(v)}${v.toFixed(2)}%`;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            ticks: { color: '#8b949e', callback: v => sign(v) + v + '%' },
+            grid:  { color: 'rgba(255,255,255,0.06)' }
+          },
+          x: { ticks: { color: '#8b949e', maxTicksLimit: 12 } }
+        }
+      }
+    });
+  }
+
+  /* 거래 기록 테이블 */
+  const trades = [...(BT.trades || [])].sort((a, b) =>
+    (b.sell_date || '').localeCompare(a.sell_date || '')
+  );
+  document.getElementById('btTradeCount').textContent = `${trades.length}건`;
+
+  const EXIT_LABEL = {
+    dropped_from_top10: '탈락',
+    end_of_backtest:    '종료',
+  };
+
+  document.getElementById('btTradeBody').innerHTML = trades.map(t => {
+    const clr = t.pnl_pct > 0 ? 'text-danger' : t.pnl_pct < 0 ? 'text-primary' : 'text-secondary';
+    const exitLabel = EXIT_LABEL[t.exit_reason] || t.exit_reason || '-';
+    return `<tr>
+      <td><strong>${t.name}</strong></td>
+      <td><span class="badge bg-secondary">${t.ticker}</span></td>
+      <td class="text-muted">${t.buy_score ?? '-'}</td>
+      <td class="text-muted">${t.buy_date}</td>
+      <td class="text-muted">${t.sell_date}</td>
+      <td>${fmt(t.buy_price)}원</td>
+      <td>${fmt(t.sell_price)}원</td>
+      <td><span class="${clr} fw-semibold">${sign(t.pnl_pct)}${t.pnl_pct.toFixed(2)}%</span></td>
+      <td class="text-muted">${t.holding_weeks}주</td>
+      <td><span class="badge bg-secondary">${exitLabel}</span></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="10" class="text-center text-muted py-3">거래 기록 없음</td></tr>';
+
+  /* 주의사항 */
+  const caveats = (meta.caveats || []);
+  document.getElementById('btCaveats').innerHTML = caveats.map(c => `<li>${c}</li>`).join('');
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
