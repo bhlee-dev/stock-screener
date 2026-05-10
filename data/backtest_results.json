@@ -1,0 +1,1319 @@
+{
+  "meta": {
+    "generated_at": "2026-05-10",
+    "backtest_period": {
+      "start": "2026-04-13",
+      "end": "2026-05-04",
+      "weeks": 4
+    },
+    "parameters": {
+      "top_n": 10,
+      "min_score_tech": 5,
+      "invest_per_stock": 1000000,
+      "initial_capital": 10000000,
+      "scoring_mode": "tech_only",
+      "trade_cost_buy_pct": 0.015,
+      "trade_cost_sell_pct": 0.215
+    },
+    "elapsed_seconds": 597,
+    "caveats": [
+      "생존자 편향: 현재 상장 종목만 대상 (상장폐지 종목 제외 → 성과 소폭 과대평가 가능)",
+      "기술 지표만 사용 (DART 재무·수급 제외)",
+      "월요일 종가를 매수/매도가로 사용 (실제 체결은 화요일 시가)"
+    ]
+  },
+  "performance": {
+    "total_return_pct": 15.7,
+    "kospi_return_pct": 19.43,
+    "alpha_pct": -3.73,
+    "mdd_pct": -3.0,
+    "win_rate_pct": 46.2,
+    "avg_trade_return_pct": 4.12,
+    "sharpe_ratio": 4.396,
+    "total_trades": 39,
+    "avg_holding_weeks": 0.8,
+    "initial_capital": 10000000,
+    "final_value": 11570046
+  },
+  "weekly_series": [
+    {
+      "date": "2026-04-13",
+      "portfolio_value": 9998533,
+      "holdings_count": 10,
+      "portfolio_return_pct": -0.01,
+      "kospi_return_pct": 0.0
+    },
+    {
+      "date": "2026-04-20",
+      "portfolio_value": 10476548,
+      "holdings_count": 10,
+      "portfolio_return_pct": 4.77,
+      "kospi_return_pct": 7.07
+    },
+    {
+      "date": "2026-04-27",
+      "portfolio_value": 11928301,
+      "holdings_count": 10,
+      "portfolio_return_pct": 19.28,
+      "kospi_return_pct": 13.88
+    },
+    {
+      "date": "2026-05-04",
+      "portfolio_value": 11570046,
+      "holdings_count": 10,
+      "portfolio_return_pct": 15.7,
+      "kospi_return_pct": 19.43
+    }
+  ],
+  "trades": [
+    {
+      "ticker": "025900",
+      "name": "동화기업",
+      "buy_date": "2026-04-13",
+      "sell_date": "2026-04-20",
+      "buy_price": 11150,
+      "sell_price": 11770,
+      "shares": 89,
+      "pnl_pct": 5.32,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "036570",
+      "name": "NC",
+      "buy_date": "2026-04-13",
+      "sell_date": "2026-04-20",
+      "buy_price": 239000,
+      "sell_price": 267500,
+      "shares": 4,
+      "pnl_pct": 11.67,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "037330",
+      "name": "인지디스플레",
+      "buy_date": "2026-04-13",
+      "sell_date": "2026-04-20",
+      "buy_price": 1520,
+      "sell_price": 1556,
+      "shares": 657,
+      "pnl_pct": 2.13,
+      "holding_weeks": 1.0,
+      "buy_score": 8,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "007690",
+      "name": "국도화학",
+      "buy_date": "2026-04-13",
+      "sell_date": "2026-04-20",
+      "buy_price": 39200,
+      "sell_price": 43300,
+      "shares": 25,
+      "pnl_pct": 10.21,
+      "holding_weeks": 1.0,
+      "buy_score": 8,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "141000",
+      "name": "비아트론",
+      "buy_date": "2026-04-13",
+      "sell_date": "2026-04-20",
+      "buy_price": 10510,
+      "sell_price": 11570,
+      "shares": 95,
+      "pnl_pct": 9.83,
+      "holding_weeks": 1.0,
+      "buy_score": 8,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "002240",
+      "name": "고려제강",
+      "buy_date": "2026-04-13",
+      "sell_date": "2026-04-20",
+      "buy_price": 22600,
+      "sell_price": 24050,
+      "shares": 44,
+      "pnl_pct": 6.17,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "092230",
+      "name": "KPX홀딩스",
+      "buy_date": "2026-04-13",
+      "sell_date": "2026-04-20",
+      "buy_price": 86000,
+      "sell_price": 86200,
+      "shares": 11,
+      "pnl_pct": 0.0,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "007330",
+      "name": "푸른저축은행",
+      "buy_date": "2026-04-13",
+      "sell_date": "2026-04-20",
+      "buy_price": 10950,
+      "sell_price": 10640,
+      "shares": 91,
+      "pnl_pct": -3.05,
+      "holding_weeks": 1.0,
+      "buy_score": 8,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "139130",
+      "name": "iM금융지주",
+      "buy_date": "2026-04-13",
+      "sell_date": "2026-04-20",
+      "buy_price": 18150,
+      "sell_price": 19120,
+      "shares": 55,
+      "pnl_pct": 5.1,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "034950",
+      "name": "한국기업평가",
+      "buy_date": "2026-04-13",
+      "sell_date": "2026-04-20",
+      "buy_price": 102200,
+      "sell_price": 103800,
+      "shares": 9,
+      "pnl_pct": 1.33,
+      "holding_weeks": 1.0,
+      "buy_score": 8,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "091440",
+      "name": "한울소재과학",
+      "buy_date": "2026-04-20",
+      "sell_date": "2026-04-27",
+      "buy_price": 3120,
+      "sell_price": 3145,
+      "shares": 320,
+      "pnl_pct": 0.57,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "456040",
+      "name": "OCI",
+      "buy_date": "2026-04-20",
+      "sell_date": "2026-04-27",
+      "buy_price": 96800,
+      "sell_price": 140700,
+      "shares": 10,
+      "pnl_pct": 45.02,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "078600",
+      "name": "대주전자재료",
+      "buy_date": "2026-04-20",
+      "sell_date": "2026-04-27",
+      "buy_price": 130000,
+      "sell_price": 170300,
+      "shares": 7,
+      "pnl_pct": 30.7,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "053620",
+      "name": "태양",
+      "buy_date": "2026-04-20",
+      "sell_date": "2026-04-27",
+      "buy_price": 7160,
+      "sell_price": 7290,
+      "shares": 139,
+      "pnl_pct": 1.58,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "012860",
+      "name": "모베이스전자",
+      "buy_date": "2026-04-20",
+      "sell_date": "2026-04-27",
+      "buy_price": 3790,
+      "sell_price": 3990,
+      "shares": 263,
+      "pnl_pct": 5.03,
+      "holding_weeks": 1.0,
+      "buy_score": 8,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "307950",
+      "name": "현대오토에버",
+      "buy_date": "2026-04-20",
+      "sell_date": "2026-04-27",
+      "buy_price": 423000,
+      "sell_price": 441000,
+      "shares": 2,
+      "pnl_pct": 4.02,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "117670",
+      "name": "알파칩스",
+      "buy_date": "2026-04-20",
+      "sell_date": "2026-04-27",
+      "buy_price": 19300,
+      "sell_price": 19000,
+      "shares": 51,
+      "pnl_pct": -1.78,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "126640",
+      "name": "화신정공",
+      "buy_date": "2026-04-20",
+      "sell_date": "2026-04-27",
+      "buy_price": 1572,
+      "sell_price": 1571,
+      "shares": 636,
+      "pnl_pct": -0.29,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "088130",
+      "name": "동아엘텍",
+      "buy_date": "2026-04-20",
+      "sell_date": "2026-04-27",
+      "buy_price": 9280,
+      "sell_price": 14620,
+      "shares": 107,
+      "pnl_pct": 57.18,
+      "holding_weeks": 1.0,
+      "buy_score": 8,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "011500",
+      "name": "한농화성",
+      "buy_date": "2026-04-20",
+      "sell_date": "2026-04-27",
+      "buy_price": 22850,
+      "sell_price": 24850,
+      "shares": 43,
+      "pnl_pct": 8.5,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "006730",
+      "name": "서부T&D",
+      "buy_date": "2026-04-27",
+      "sell_date": "2026-05-04",
+      "buy_price": 14860,
+      "sell_price": 14960,
+      "shares": 67,
+      "pnl_pct": 0.44,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "060280",
+      "name": "큐렉소",
+      "buy_date": "2026-04-27",
+      "sell_date": "2026-05-04",
+      "buy_price": 17290,
+      "sell_price": 16200,
+      "shares": 57,
+      "pnl_pct": -6.52,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "437730",
+      "name": "삼현",
+      "buy_date": "2026-04-27",
+      "sell_date": "2026-05-04",
+      "buy_price": 57400,
+      "sell_price": 53500,
+      "shares": 17,
+      "pnl_pct": -7.01,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "130660",
+      "name": "한전산업",
+      "buy_date": "2026-04-27",
+      "sell_date": "2026-05-04",
+      "buy_price": 20900,
+      "sell_price": 20600,
+      "shares": 47,
+      "pnl_pct": -1.66,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "432470",
+      "name": "케이엔에스",
+      "buy_date": "2026-04-27",
+      "sell_date": "2026-05-04",
+      "buy_price": 14360,
+      "sell_price": 14870,
+      "shares": 69,
+      "pnl_pct": 3.31,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "217500",
+      "name": "러셀",
+      "buy_date": "2026-04-27",
+      "sell_date": "2026-05-04",
+      "buy_price": 3010,
+      "sell_price": 2865,
+      "shares": 332,
+      "pnl_pct": -5.04,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "474170",
+      "name": "루미르",
+      "buy_date": "2026-04-27",
+      "sell_date": "2026-05-04",
+      "buy_price": 16740,
+      "sell_price": 16270,
+      "shares": 59,
+      "pnl_pct": -3.03,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "002230",
+      "name": "피에스텍",
+      "buy_date": "2026-04-27",
+      "sell_date": "2026-05-04",
+      "buy_price": 10830,
+      "sell_price": 10750,
+      "shares": 92,
+      "pnl_pct": -0.97,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "330590",
+      "name": "롯데리츠",
+      "buy_date": "2026-04-27",
+      "sell_date": "2026-05-04",
+      "buy_price": 4790,
+      "sell_price": 4270,
+      "shares": 208,
+      "pnl_pct": -11.06,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "dropped_from_top10"
+    },
+    {
+      "ticker": "090710",
+      "name": "휴림로봇",
+      "buy_date": "2026-04-27",
+      "sell_date": "2026-05-04",
+      "buy_price": 13120,
+      "sell_price": 12510,
+      "shares": 76,
+      "pnl_pct": -4.87,
+      "holding_weeks": 1.0,
+      "buy_score": 9,
+      "exit_reason": "end_of_backtest"
+    },
+    {
+      "ticker": "002990",
+      "name": "금호건설",
+      "buy_date": "2026-05-04",
+      "sell_date": "2026-05-04",
+      "buy_price": 5480,
+      "sell_price": 5480,
+      "shares": 182,
+      "pnl_pct": -0.23,
+      "holding_weeks": 0.0,
+      "buy_score": 9,
+      "exit_reason": "end_of_backtest"
+    },
+    {
+      "ticker": "005990",
+      "name": "매일홀딩스",
+      "buy_date": "2026-05-04",
+      "sell_date": "2026-05-04",
+      "buy_price": 11340,
+      "sell_price": 11340,
+      "shares": 88,
+      "pnl_pct": -0.23,
+      "holding_weeks": 0.0,
+      "buy_score": 10,
+      "exit_reason": "end_of_backtest"
+    },
+    {
+      "ticker": "012210",
+      "name": "삼미금속",
+      "buy_date": "2026-05-04",
+      "sell_date": "2026-05-04",
+      "buy_price": 15450,
+      "sell_price": 15450,
+      "shares": 64,
+      "pnl_pct": -0.23,
+      "holding_weeks": 0.0,
+      "buy_score": 9,
+      "exit_reason": "end_of_backtest"
+    },
+    {
+      "ticker": "047770",
+      "name": "코데즈컴바인",
+      "buy_date": "2026-05-04",
+      "sell_date": "2026-05-04",
+      "buy_price": 5280,
+      "sell_price": 5280,
+      "shares": 189,
+      "pnl_pct": -0.23,
+      "holding_weeks": 0.0,
+      "buy_score": 9,
+      "exit_reason": "end_of_backtest"
+    },
+    {
+      "ticker": "066430",
+      "name": "아이로보틱스",
+      "buy_date": "2026-05-04",
+      "sell_date": "2026-05-04",
+      "buy_price": 2220,
+      "sell_price": 2220,
+      "shares": 450,
+      "pnl_pct": -0.23,
+      "holding_weeks": 0.0,
+      "buy_score": 9,
+      "exit_reason": "end_of_backtest"
+    },
+    {
+      "ticker": "076610",
+      "name": "해성옵틱스",
+      "buy_date": "2026-05-04",
+      "sell_date": "2026-05-04",
+      "buy_price": 1885,
+      "sell_price": 1885,
+      "shares": 530,
+      "pnl_pct": -0.23,
+      "holding_weeks": 0.0,
+      "buy_score": 9,
+      "exit_reason": "end_of_backtest"
+    },
+    {
+      "ticker": "102940",
+      "name": "코오롱생명과학",
+      "buy_date": "2026-05-04",
+      "sell_date": "2026-05-04",
+      "buy_price": 59600,
+      "sell_price": 59600,
+      "shares": 16,
+      "pnl_pct": -0.23,
+      "holding_weeks": 0.0,
+      "buy_score": 9,
+      "exit_reason": "end_of_backtest"
+    },
+    {
+      "ticker": "230360",
+      "name": "에코마케팅",
+      "buy_date": "2026-05-04",
+      "sell_date": "2026-05-04",
+      "buy_price": 16000,
+      "sell_price": 16000,
+      "shares": 62,
+      "pnl_pct": -0.23,
+      "holding_weeks": 0.0,
+      "buy_score": 9,
+      "exit_reason": "end_of_backtest"
+    },
+    {
+      "ticker": "323350",
+      "name": "다원넥스뷰",
+      "buy_date": "2026-05-04",
+      "sell_date": "2026-05-04",
+      "buy_price": 13700,
+      "sell_price": 13700,
+      "shares": 72,
+      "pnl_pct": -0.23,
+      "holding_weeks": 0.0,
+      "buy_score": 9,
+      "exit_reason": "end_of_backtest"
+    }
+  ],
+  "weekly_holdings": [
+    {
+      "date": "2026-04-13",
+      "holdings": [
+        {
+          "ticker": "002240",
+          "name": "고려제강",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "007330",
+          "name": "푸른저축은행",
+          "score": 8,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": false,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "007690",
+          "name": "국도화학",
+          "score": 8,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": false,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "025900",
+          "name": "동화기업",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "034950",
+          "name": "한국기업평가",
+          "score": 8,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": true,
+            "bollinger_contraction": false,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "036570",
+          "name": "NC",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "037330",
+          "name": "인지디스플레",
+          "score": 8,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": true,
+            "bollinger_contraction": false,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "092230",
+          "name": "KPX홀딩스",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "139130",
+          "name": "iM금융지주",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "141000",
+          "name": "비아트론",
+          "score": 8,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": false,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-04-20",
+      "holdings": [
+        {
+          "ticker": "011500",
+          "name": "한농화성",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "012860",
+          "name": "모베이스전자",
+          "score": 8,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": false,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "053620",
+          "name": "태양",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": false,
+            "base_formation": true,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "078600",
+          "name": "대주전자재료",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "088130",
+          "name": "동아엘텍",
+          "score": 8,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": false,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "091440",
+          "name": "한울소재과학",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "117670",
+          "name": "알파칩스",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "126640",
+          "name": "화신정공",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "307950",
+          "name": "현대오토에버",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "456040",
+          "name": "OCI",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-04-27",
+      "holdings": [
+        {
+          "ticker": "002230",
+          "name": "피에스텍",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "006730",
+          "name": "서부T&D",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "060280",
+          "name": "큐렉소",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "090710",
+          "name": "휴림로봇",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "130660",
+          "name": "한전산업",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "217500",
+          "name": "러셀",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "330590",
+          "name": "롯데리츠",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "432470",
+          "name": "케이엔에스",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "437730",
+          "name": "삼현",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "474170",
+          "name": "루미르",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        }
+      ]
+    },
+    {
+      "date": "2026-05-04",
+      "holdings": [
+        {
+          "ticker": "090710",
+          "name": "휴림로봇",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "002990",
+          "name": "금호건설",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "005990",
+          "name": "매일홀딩스",
+          "score": 10,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": true,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "012210",
+          "name": "삼미금속",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "047770",
+          "name": "코데즈컴바인",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "066430",
+          "name": "아이로보틱스",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "076610",
+          "name": "해성옵틱스",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "102940",
+          "name": "코오롱생명과학",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "230360",
+          "name": "에코마케팅",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        },
+        {
+          "ticker": "323350",
+          "name": "다원넥스뷰",
+          "score": 9,
+          "conditions": {
+            "ma_uptrend": true,
+            "ma_full_alignment": true,
+            "base_formation": false,
+            "bollinger_contraction": true,
+            "volume_breakout": true,
+            "rsi_not_overbought": true,
+            "eps_growth": false,
+            "revenue_growth": false,
+            "operating_profit_growth": false,
+            "institution_net_buy": false,
+            "foreign_net_buy": false
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -86,11 +86,12 @@ def _cache_valid(weeks: int) -> bool:
     if not _META_FILE.exists() or not _CACHE_FILE.exists():
         return False
     try:
-        meta = json.loads(_META_FILE.read_text())
+        meta = json.loads(_META_FILE.read_text(encoding="utf-8"))
         created = date.fromisoformat(meta["created_at"])
         if (date.today() - created).days > BT_CACHE_REFRESH_DAYS:
             return False
-        needed_start = date.today() - timedelta(days=weeks * 7 + 500)
+        # 300 거래일 ≈ 440 캘린더일이 실제 필요 범위
+        needed_start = date.today() - timedelta(days=weeks * 7 + 440)
         cached_start = datetime.strptime(meta["start_date"], "%Y%m%d").date()
         return cached_start <= needed_start
     except Exception:
@@ -212,7 +213,7 @@ def _build_cache(tickers: list[str], start_date: date, end_date: date) -> pd.Dat
         "end_date": end_str,
         "ticker_count": int(final_df["ticker"].nunique()),
         "row_count": len(final_df),
-    }))
+    }), encoding="utf-8")
     if _CHECKPOINT_FILE.exists():
         _CHECKPOINT_FILE.unlink()
 
@@ -547,7 +548,8 @@ def _save_results(
     }
     _RESULTS_FILE.parent.mkdir(exist_ok=True)
     _RESULTS_FILE.write_text(
-        json.dumps(results, ensure_ascii=False, default=str, indent=2)
+        json.dumps(results, ensure_ascii=False, default=str, indent=2),
+        encoding="utf-8",
     )
     logger.info(f"백테스트 결과 저장: {_RESULTS_FILE}")
 
